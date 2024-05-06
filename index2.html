@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Shop Sales Dashboard</title>
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+  <header>
+    <h1>Coffee Shop Sales Dashboard</h1>
+  </header>
+  <main>
+     <section class="summary">
+      <h2>Summary</h2>
+    </section>
+    <section class="filters">
+      <h2>Filters</h2>
+      <div class="filter-container">
+        <label for="month-dropdown">Month:</label>
+        <select id="month-dropdown">
+          <option value="all">All Months</option>
+          <option value="january">January</option>
+          <option value="february">February</option>
+          <option value="march">March</option>
+          <option value="april">April</option>
+          <option value="may">May</option>
+          <option value="june">June</option>
+        </select>
+        </div>
+        <div class="card">
+        </div>
+        <div class="filter-container">
+        <label for="store-dropdown">Store Location:</label>
+        <select id="store-dropdown">
+          <option value="all">All Stores</option>
+          <option value="hells-kitchen">Hell's Kitchen</option>
+          <option value="astoria">Astoria</option>
+          <option value="lower-manhattan">Lower Manhattan</option>
+        </select>
+      </div>
+      <div class="card">
+      </div>
+      <div class="card-container">
+        <div class="card">
+          <h3>Total Revenue</h3>
+          <p id="total-revenue">--</p>
+        </div>
+        <div class="card">
+          <h3>Total Product Sales</h3>
+          <p id="total-product-sales">--</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
