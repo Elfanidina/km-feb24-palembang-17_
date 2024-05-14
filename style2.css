@@ -56,3 +56,7 @@ main {
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+.filter-container label  {
+  font-size: large;
+}
