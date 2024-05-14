@@ -1,19 +1,38 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f7f3e9;
+  color: #5d4037;
 }
 
 header {
-  background-color: #f8f9fa;
+  background-color: #3e2723;
+  color: #000000;
   padding: 20px;
   text-align: center;
+  background-image: url('bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+header h1 {
+  margin: 0;
+  font-family: 'Pacifico', cursive;
 }
 
 main {
-  margin: 20px;
+  padding: 20px;
+}
+
+section h2 {
+  border-bottom: 2px solid #d7ccc8;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  color: #3e2723;
 }
 
 .filter-container {
-  width: 50%;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -22,23 +41,49 @@ main {
 
 .filter-container label {
   font-weight: bold;
+  color: #3e2723;
 }
 
 .filter-container select {
-  width: 50%;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #ced4da;
+  border: 1px solid #d7ccc8;
+  width: 100%;
+  max-width: 300px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .card {
-  width: 25%;
-  display: flex;
-  border: 1px solid #ced4da;
-  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+  border: 1px solid #d7ccc8;
   border-radius: 5px;
   padding: 20px;
-  margin-bottom: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  background-image: url('bg.jpg');
+  background-size: cover;
+  background-blend-mode: multiply;
+  color: #fff;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card h3 {
+  margin-top: 0;
+  color: #000000;
+}
+
+.card p {
+  font-size: 1.5em;
 }
 
 .card-container {
