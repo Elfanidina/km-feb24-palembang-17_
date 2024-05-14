@@ -9,8 +9,8 @@ body {
 }
 
 header {
-  background-color: #f8f9fa;
-  padding: 20px;
+  background-color: wheat;
+  padding: 30px;
   text-align: center;
 }
 
@@ -45,8 +45,14 @@ main {
   border-radius: 5px;
   padding: 20px;
   margin-bottom: 20px;
+  margin-right: 20px;
 }
 
 .card-container {
   display: flex;
+}
+
+.filters h2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
