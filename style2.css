@@ -8,10 +8,10 @@ body {
 
 header {
   background-color: #3e2723;
-  color: #fff;
+  color: #000000;
   padding: 20px;
   text-align: center;
-  background-image: url('coffee-header-bg.jpg');
+  background-image: url('bg.jpg');
   background-size: cover;
   background-position: center;
 }
@@ -79,7 +79,7 @@ section h2 {
 
 .card h3 {
   margin-top: 0;
-  color: #fff;
+  color: #000000;
 }
 
 .card p {
