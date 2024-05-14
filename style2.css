@@ -13,9 +13,14 @@ body {
 }
 
 header {
+<<<<<<< HEAD
   background-color: #3e2723;
   color: #000000;
   padding: 20px;
+=======
+  background-color: wheat;
+  padding: 30px;
+>>>>>>> 217c3f93fb4e4884cf853e1715fda71b7b5ae483
   text-align: center;
   background-image: url('bg.jpg');
   background-size: cover;
@@ -70,6 +75,7 @@ section h2 {
   border: 1px solid #d7ccc8;
   border-radius: 5px;
   padding: 20px;
+<<<<<<< HEAD
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
@@ -90,8 +96,21 @@ section h2 {
 
 .card p {
   font-size: 1.5em;
+=======
+  margin-bottom: 20px;
+  margin-right: 20px;
+>>>>>>> 217c3f93fb4e4884cf853e1715fda71b7b5ae483
 }
 
 .card-container {
   display: flex;
+}
+
+.filters h2 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.filter-container label  {
+  font-size: large;
 }
