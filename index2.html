@@ -9,6 +9,11 @@
 </head>
 
 <body>
+  <div class="navbar">
+    <a href="#home" class="active">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact Us</a>
+</div>
   <header>
     <h1>Coffee Shop Sales Dashboard</h1>
   </header>
@@ -39,6 +44,7 @@
           <option value="lower-manhattan">Lower Manhattan</option>
         </select>
       </div>
+      <button class="filter-button">Filters</button>
     </section>
     <section class="cards">
       <div class="card">
@@ -50,6 +56,33 @@
         <p id="total-product-sales">--</p>
       </div>
     </section>
+
+    <section class="card of charts">
+    <div class="card-js">
+      <h2>Monthly Revenue</h2>
+      <canvas id="monthlyRevenueChart"></canvas>
+  </div>
+  
+  <div class="card-js">
+      <h2>Revenue by Day of Week</h2>
+      <canvas id="revenueByDayOfWeekChart"></canvas>
+  </div>
+  
+  <div class="card-js">
+      <h2>Category Product Based on Qty Sold</h2>
+      <canvas id="categoryProductQtyChart"></canvas>
+  </div>
+  
+  <div class="card-js">
+      <h2>Top Products Sold by Qty</h2>
+      <canvas id="topProductsQtyChart"></canvas>
+  </div>
+  
+  <div class="card-js">
+      <h2>Lowest Products Sold by Qty</h2>
+      <canvas id="lowestProductsQtyChart"></canvas>
+  </div>
+</section>
   </main>
   <script src="script.js"></script>
 </body>
