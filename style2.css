@@ -11,8 +11,13 @@ body {
   justify-content: center;
   align-items: center;
   background-color: #333;
-  padding: 10px 20px;
+  padding: 20px 20px;
+  transition: height 0.3s;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar.expanded {
+  height: 100px;
 }
 
 .navbar a {
@@ -30,6 +35,11 @@ body {
 .navbar a.active {
   background-color: #04AA6D;
   color: white;
+}
+
+.nav-links {
+  display: flex;
+  height: 100%;
 }
 
 header {
@@ -59,8 +69,8 @@ section h2 {
 }
 
 .filter-container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 10px;
   margin-bottom: 20px;
 }
@@ -141,4 +151,47 @@ section h2 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   margin-bottom: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .burger-menu {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+ }
+
+ .burger-menu .line {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 4px;
+}
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    width: 60%;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+}
+
+.footer {
+  background-color: #f2f2f2;
+  padding: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer .copyright {
+  font-size: 0.8rem;
 }
