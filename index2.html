@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
 <head>
   <meta charset="UTF-8">
@@ -30,34 +31,35 @@
     </section>
     <section class="filters">
       <form>
-      <h2>Filters</h2>
-      <div class="filter-container">
-        <label for="month-dropdown">Month:</label>
-        <select id="month-dropdown">
-          <option value="all">All Months</option>
-          <option value="january">January</option>
-          <option value="february">February</option>
-          <option value="march">March</option>
-          <option value="april">April</option>
-          <option value="may">May</option>
-          <option value="june">June</option>
-        </select>
-      </div>
-      <div class="filter-container">
-        <label for="store-dropdown">Store Location:</label>
-        <select id="store-dropdown">
-          <option value="all">All Stores</option>
-          <option value="hells-kitchen">Hell's Kitchen</option>
-          <option value="astoria">Astoria</option>
-          <option value="lower-manhattan">Lower Manhattan</option>
-        </select>
-      </div>
-      <button class="filter-button">Filters</button>
+        <h2>Filters</h2>
+        <div class="filter-container">
+          <label>Month:</label>
+          <div style="display: flex; flex-direction: column;">
+            <label><input type="checkbox" name="month" value="all"> All Months</label>
+            <label><input type="checkbox" name="month" value="january"> January</label>
+            <label><input type="checkbox" name="month" value="february"> February</label>
+            <label><input type="checkbox" name="month" value="march"> March</label>
+            <label><input type="checkbox" name="month" value="april"> April</label>
+            <label><input type="checkbox" name="month" value="may"> May</label>
+            <label><input type="checkbox" name="month" value="june"> June</label>
+          </div>
+        </div>
+        <div class="filter-container">
+          <label for="store-dropdown">Store Location:</label>
+          <div style="display: flex; flex-direction: column;">
+            <label><input type="checkbox" name="month" value="all"> All Store</label>
+            <label><input type="checkbox" name="month" value="january"> Hell's Kitchen</label>
+            <label><input type="checkbox" name="month" value="february"> Astoria</label>
+            <label><input type="checkbox" name="month" value="march"> Lower Manhattan</label>
+          </div>
+        </div>
+        <button class="filter-button">Filters</button>
       </form>
     </section>
     <section class="cards">
       <div class="card">
         <h3>Total Revenue</h3>
+
         <p id="total-revenue">--</p>
       </div>
       <div class="card">
@@ -65,40 +67,350 @@
         <p id="total-product-sales">--</p>
       </div>
     </section>
-
+    <div class="flex-wrapper">
+      <div class="flex-item">
+        <canvas id="monthly_revenue" style="width:700px;"></canvas>
+      </div>
+      <div class="flex-item">
+        <canvas id="weekly_revenue" style="width:500px"></canvas>
+      </div>
+    </div>
     <section class="card of charts">
-    <div class="card-js">
-      <h2>Monthly Revenue</h2>
-      <canvas id="monthlyRevenueChart"></canvas>
-  </div>
-  
-  <div class="card-js">
-      <h2>Revenue by Day of Week</h2>
-      <canvas id="revenueByDayOfWeekChart"></canvas>
-  </div>
-  
-  <div class="card-js">
-      <h2>Category Product Based on Qty Sold</h2>
-      <canvas id="categoryProductQtyChart"></canvas>
-  </div>
-  
-  <div class="card-js">
-      <h2>Top Products Sold by Qty</h2>
-      <canvas id="topProductsQtyChart"></canvas>
-  </div>
-  
-  <div class="card-js">
-      <h2>Lowest Products Sold by Qty</h2>
-      <canvas id="lowestProductsQtyChart"></canvas>
-  </div>
-</section>
+      <div class="card-js">
+        <h2>Monthly Revenue</h2>
+        <canvas id="monthly_revenue" style="width:100%;max-width:600px"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Revenue by Day of Week</h2>
+        <canvas id="weekly_revenue" style="width:100%;max-width:600px"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Category Product Based on Qty Sold</h2>
+        <canvas id="category_based" style="width:100%;max-width:600px"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Top Products Sold by Qty</h2>
+        <canvas id="topProductsQtyChart"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Lowest Products Sold by Qty</h2>
+        <canvas id="lowestProductsQtyChart"></canvas>
+      </div>
+    </section>
   </main>
 
-<footer class="footer">
-  <p>&copy; 2024 All Rights Reserved.</p>
-</footer>
+  <footer class="footer">
+    <p>&copy; 2024 All Rights Reserved.</p>
+  </footer>
 
   <script src="script.js"></script>
+  <script src="transaction.js" type="text/javascript"></script>
+  <script>
+
+    newArr = [];
+    monthlyArr = [];
+    // var mydata = JSON.parse(json);
+    // console.log(mydata)
+    // arr = data['records']
+    const arr = [
+      { "transaction_id": "4329", "transaction_date": "2023-01-08", "transaction_time": "17:48:46", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "8376", "transaction_date": "2023-01-15", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "11305", "transaction_date": "2023-01-20", "transaction_time": "15:01:52", "transaction_qty": "1", "store_id": "3", "store_location": "Hell's Kitchen", "product_id": "1", "unit_price": 18, "product_category": "Flavours", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "25862", "transaction_date": "2023-02-15", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "26245", "transaction_date": "2023-02-16", "transaction_time": "09:15:11", "transaction_qty": "1", "store_id": "3", "store_location": "Hell's Kitchen", "product_id": "1", "unit_price": 18, "product_category": "Flavours", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 1 },
+      { "transaction_id": "28300", "transaction_date": "2023-02-19", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Hell's Kitchen", "product_id": "1", "unit_price": 18, "product_category": "Flavours", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "28561", "transaction_date": "2023-02-20", "transaction_time": "08:21:01", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "28951", "transaction_date": "2023-02-20", "transaction_time": "15:01:52", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Loose Tea", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "39147", "transaction_date": "2023-03-09", "transaction_time": "07:45:34", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Branded", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 10 },
+      { "transaction_id": "40479", "transaction_date": "2023-03-10", "transaction_time": "17:24:17", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Branded", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "40938", "transaction_date": "2023-03-11", "transaction_time": "10:54:15", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "OrganicBranded", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "43896", "transaction_date": "2023-03-15", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "44015", "transaction_date": "2023-03-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "44808", "transaction_date": "2023-03-16", "transaction_time": "19:59:51", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 12 },
+      { "transaction_id": "45238", "transaction_date": "2023-03-17", "transaction_time": "10:53:24", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "46803", "transaction_date": "2023-03-19", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "47051", "transaction_date": "2023-03-20", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "47065", "transaction_date": "2023-03-20", "transaction_time": "08:21:01", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "47533", "transaction_date": "2023-03-20", "transaction_time": "15:01:52", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "61637", "transaction_date": "2023-04-09", "transaction_time": "07:46:10", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "67582", "transaction_date": "2023-04-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "69114", "transaction_date": "2023-04-17", "transaction_time": "10:53:24", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "69951", "transaction_date": "2023-04-18", "transaction_time": "10:53:42", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "71065", "transaction_date": "2023-04-19", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "71194", "transaction_date": "2023-04-19", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "71343", "transaction_date": "2023-04-20", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "79758", "transaction_date": "2023-04-30", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "91055", "transaction_date": "2023-05-10", "transaction_time": "17:24:17", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "96567", "transaction_date": "2023-05-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 10 },
+      { "transaction_id": "96567", "transaction_date": "2023-05-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Loose Tea", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 100 },
+      { "transaction_id": "97348", "transaction_date": "2023-05-16", "transaction_time": "10:54:49", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 12 },
+      { "transaction_id": "97858", "transaction_date": "2023-05-16", "transaction_time": "19:59:51", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "99568", "transaction_date": "2023-05-18", "transaction_time": "10:53:42", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+      { "transaction_id": "100482", "transaction_date": "2023-05-19", "transaction_time": "08:52:22", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 1 }
+
+    ];
+    const sort = ["Lower Manhattan", "Astoria", "Hell's Kitchen"];
+    const sortDate = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+    x = [];
+    y = [];
+    weeklyTotal = [];
+    const weeklyDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    categoryTotal = [];
+    categoryNames = [];
+    category = [];
+
+    proccessData(arr);
+    var xValues = [];
+    var yValues = [];
+    generateData("Math.sin(x)", 0, 10, 0.5);
+
+    new Chart("monthly_revenue", {
+      type: "line",
+      data: {
+        labels: y,
+        datasets: [{
+          fill: false,
+          pointRadius: 2,
+          borderColor: "rgba(0,0,255,0.5)",
+          data: x
+        }]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Monthly Revenue",
+          fontSize: 16
+        }
+      }
+    });
+    new Chart("weekly_revenue", {
+      type: "bar",
+      data: {
+        labels: weeklyDay,
+        datasets: [{
+          fill: false,
+          pointRadius: 2,
+          borderColor: "rgba(0,0,255,0.5)",
+          data: weeklyTotal,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2',
+            'rgba(255, 99, 132, 0.2'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+          ],
+
+        }]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: " of day per week",
+          fontSize: 16
+        }
+      }
+    });
+    new Chart("category_based", {
+      type: "bar",
+      data: {
+        labels: categoryNames,
+        datasets: [{
+          fill: false,
+          pointRadius: 2,
+          borderColor: "rgba(0,0,255,0.5)",
+          data: categoryTotal
+        }]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Category Product Based on Qty Sold",
+          fontSize: 16
+        }
+      }
+    });
+
+
+    new Chart("category_based", {
+      type: "horizontalBar",
+      data: {
+        labels: categoryNames,
+        datasets: [{
+          fill: false,
+          pointRadius: 2,
+          borderColor: "rgba(0,0,255,0.5)",
+          data: categoryTotal
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Category Product Based on Qty Sold",
+          fontSize: 16
+        }
+      }
+    });
+    // Top Products Sold by Qty Chart
+    new Chart("topProductsQtyChart", {
+      type: "bar",
+      data: {
+        labels: [], // To be filled dynamically
+        datasets: [{
+          label: 'Qty Sold',
+          data: [], // To be filled dynamically
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
+        title: {
+          display: true,
+          text: 'Top Products Sold by Qty',
+          fontSize: 16
+        }
+      }
+    });
+    new Chart("lowestProductsQtyChart", {
+      type: "bar",
+      data: {
+        labels: [], // To be filled dynamically
+        datasets: [{
+          label: 'Qty Sold',
+          data: [], // To be filled dynamically
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
+        title: {
+          display: true,
+          text: 'Lowest Products Sold by Qty',
+          fontSize: 16
+        }
+      }
+    });
+
+
+
+
+
+    function generateData(value, i1, i2, step = 1) {
+      for (let x = i1; x <= i2; x += step) {
+        yValues.push(eval(value));
+        xValues.push(x);
+      }
+    }
+
+    function proccessData(value) {
+      var options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+      newVal = [];
+      newVal = value.filter((data) => { return sort.includes(data['store_location']) });
+      for (let i = 0; i < newVal.length; i++) {
+        newVal[i]['transaction_date'] = new Date(newVal[i]['transaction_date']).toLocaleDateString("en-US", options);
+      }
+      //format tanggal dan push 
+      for (let j = 0; j < sortDate.length; j++) {
+        temp = 0;
+        for (let i = 0; i < newVal.length; i++) {
+          if (newVal[i]['transaction_date'].includes(sortDate[j])) {
+            newArr.push(newVal[i]);
+            temp = temp + newVal[i]['total_sales']
+          }
+        }
+        x.push(temp);
+      }
+      y = sortDate;
+      processWeekly(newArr);
+      processByCategory(newArr);
+    }
+
+    function processWeekly(value) {
+      for (let j = 0; j < weeklyDay.length; j++) {
+        temp = 0;
+        for (let i = 0; i < value.length; i++) {
+          if (value[i]['transaction_date'].includes(weeklyDay[j])) {
+            temp = temp + newVal[i]['total_sales']
+          }
+        }
+        weeklyTotal.push(temp);
+      }
+    }
+    function processByCategory(value) {
+      console.log('processing');
+      var obj = {};
+      for (let i = 0; i < value.length; i++) {
+        if (category.length == 0) {
+          obj["name"] = value[i]['product_category'];
+          obj["total"] = value[i]['total_sales'];
+          category.push(obj);
+        } else {
+          for (let j = 0; j < category.length; j++) {
+            if (category[j]['name'].includes(value[i]['product_category'])) {
+              category[j]['total'] = category[j]['total'] + value[i]['total_sales'];
+              break;
+            }
+            else {
+              if (category.length != j + 1) {
+                continue;
+              } else {
+                temp = {};
+                temp["name"] = value[i]['product_category'];
+                temp["total"] = value[i]['total_sales'];
+                category.push(temp);
+                break;
+              }
+            }
+          }
+
+        }
+        category.sort(function (a, b) {
+          return b['total'] - a['total'];
+        });
+
+      }
+      for (let i = 0; i < category.length; i++) {
+        categoryTotal.push(category[i]['total']);
+        categoryNames.push(category[i]['name']);
+      }
+    }
+
+  </script>
 </body>
 
 </html>
