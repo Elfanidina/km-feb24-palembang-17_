@@ -6,6 +6,10 @@ body {
   color: #5d4037;
 }
 
+.no-scroll {
+  overflow: hidden;
+}
+
 .navbar {
   display: flex;
   justify-content: center;
@@ -207,6 +211,123 @@ section h2 {
   box-shadow: 0px 0px 6px 2px rgb(152 139 139 / 50%);
 }
 
+.flex-wrapper2 {
+  display: flex;
+  justify-content: space-evenly;
+
+}
+
+.flex-item2 {
+  padding: 10px;
+  box-shadow: 0px 0px 6px 2px rgb(152 139 139 / 50%);
+}
+
 img {
   max-width: 100%;
+}
+
+/* CHECKBOX STYLING*/
+.multiselect {
+  width: 100%;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#selectMonth {
+  display: none;
+  border: 0.5px #7c7c7c solid;
+  background-color: #ffffff;
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+#selectMonth label {
+  display: block;
+  font-weight: normal;
+  display: block;
+  white-space: nowrap;
+  min-height: 1.2em;
+  background-color: #ffffff00;
+  padding: 0 2.25rem 0 .75rem;
+  /* padding: .375rem 2.25rem .375rem .75rem; */
+}
+
+#selectMonth label:hover {
+  background-color: #1e90ff;
+}
+
+
+
+
+/* STORE CHECKBOX STYLE*/
+.multiselectStore {
+  width: 100%;
+}
+
+.selectBoxStore {
+  position: relative;
+}
+
+.selectBoxStore select {
+  width: 100%;
+}
+
+.overSelectStore {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#selectStore {
+  display: none;
+  border: 0.5px #7c7c7c solid;
+  background-color: #ffffff;
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+#selectStore label {
+  display: block;
+  font-weight: normal;
+  display: block;
+  white-space: nowrap;
+  min-height: 1.2em;
+  background-color: #ffffff00;
+  padding: 0 2.25rem 0 .75rem;
+  /* padding: .375rem 2.25rem .375rem .75rem; */
+}
+
+#selectStore label:hover {
+  background-color: #1e90ff;
+}
+
+/* Loading */
+#loading {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(192, 192, 192, 0.5);
+  background-image: url("https://i.sstatic.net/MnyxU.gif");
+  background-repeat: no-repeat;
+  background-position: center;
 }
