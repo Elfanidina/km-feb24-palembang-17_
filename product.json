@@ -1,0 +1,7 @@
+[
+    {"transaction_qty":"1","store_location":"Astoria","product_id":"1","unit_price":18,"product_category":"Coffee beans"},
+    {"transaction_qty":"2","store_location":"Astoria","product_id":"1","unit_price":18,"product_category":"Coffee beans"},
+    {"transaction_qty":"5","store_location":"Lower Manhattan","product_id":"87","unit_price":2.1,"product_category":"Coffee"},
+    {"transaction_qty":"3","store_location":"Astoria","product_id":"1","unit_price":18,"product_category":"Coffee beans"},
+    {"transaction_qty":"8","store_location":"Lower Manhattan","product_id":"87","unit_price":3,"product_category":"Coffee"}
+]

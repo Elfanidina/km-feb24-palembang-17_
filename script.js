@@ -9,3 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
+
+  $(document).ready(function() {
+    fetch('product.json')
+      .then(response => response.json())
+      .then(data => {
+  
+        let table = $('#productTable').DataTable({
+          data: data,
+          dom: 'lrftp',
+          
+          columns: [
+            { data: 'product_id' },
+            { data: 'product_category' },
+            { data: 'store_location' },
+            { data: 'transaction_qty' },
+            { data: 'unit_price' }
+          ]
+        });
+  
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  });
+  
