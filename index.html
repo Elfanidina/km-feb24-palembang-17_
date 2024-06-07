@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop Sales Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <style>
+      table {
+          width: 100%;
+          border-collapse: collapse;
+      }
+      th, td {
+          padding: 8px;
+      }
+    </style>
+</head>
+
+<body class="no-scroll">
+  <nav class="navbar">
+    <div class="burger-menu" id="burger-menu">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About Us</a>
+      <a href="#contact">Contact Us</a>
+    </div>
+  </nav>
+  <header>
+    <h1>Coffee Shop Sales Dashboard</h1>
+  </header>
+  <main>
+    <section class="summary">
+      <h1>Summary</h1>
+    <table id="productTable" class="display">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Product</th>
+                <th>Store</th>
+                <th>Transaction-Qty</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be inserted here by JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+    </section>
+    <section class="filters">
+      <form>
+        <h2>Filters</h2>
+        <div class="filter-container">
+          <label>Month:</label>
+          <div id="myMultiselect" class="multiselect">
+            <div id="mySelectLabel" class="selectBox" onclick="toggleCheckboxArea()">
+              <select class="form-select">
+                <option>Select Month</option>
+              </select>
+              <div class="overSelect"></div>
+            </div>
+            <div id="selectMonth">
+              <label for="all"><input type="checkbox" id="all" onclick="toggleAll(this)" value="all"
+                  class="monthSelector" /> All
+                Months</label>
+              <label for="one"><input type="checkbox" id="Jan" onchange="checkboxStatusChange()" value="Jan"
+                  class="monthSelector" /> January
+              </label>
+              <label for="two"><input type="checkbox" id="Feb" onchange="checkboxStatusChange()" value="Feb"
+                  class="monthSelector" /> February
+              </label>
+              <label for="three"><input type="checkbox" id="Mar" onchange="checkboxStatusChange()" value="Mar"
+                  class="monthSelector" /> March
+              </label>
+              <label for="four"><input type="checkbox" id="Apr" onchange="checkboxStatusChange()" value="Apr"
+                  class="monthSelector" /> April
+              </label>
+              <label for="five"><input type="checkbox" id="May" onchange="checkboxStatusChange()" value="May"
+                  class="monthSelector" /> May
+              </label>
+              <label for="six"><input type="checkbox" id="June" onchange="checkboxStatusChange()" value="June"
+                  class="monthSelector" /> June
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="filter-container">
+          <label for="store-dropdown">Store Location:</label>
+          <div id="mymultiselectStore" class="multiselectStore">
+            <div id="mySelectLabelStore" class="selectBoxStore" onclick="toggleCheckboxAreaStore()">
+              <select class="form-select-store">
+                <option>Select store</option>
+              </select>
+              <div class="overSelectStore"></div>
+            </div>
+            <div id="selectStore">
+              <label for="allStore"><input type="checkbox" id="allStore" onclick="toggleAllStore(this)" value="allStore"
+                  class="storeSelector" />
+                All
+                Store</label>
+              <label for="Hell's Kitchen"><input type="checkbox" id="Hell's Kitchen"
+                  onchange="checkboxStatusChangeStore()" value="Hell's Kitchen" class="storeSelector" />
+                Hell's Kitchen
+              </label>
+              <label for="Astoria"><input type="checkbox" id="Astoria" onchange="checkboxStatusChangeStore()"
+                  value="Astoria" class="storeSelector" />
+                Astoria
+              </label>
+              <label for="Lower Manhattan"><input type="checkbox" id="Lower Manhattan"
+                  onchange="checkboxStatusChangeStore()" value="Lower Manhattan" class="storeSelector" /> Lower
+                Manhattan
+              </label>
+            </div>
+          </div>
+
+        </div>
+      </form>
+      <button class="filter">Filters</button>
+    </section>
+    <section class=" cards">
+      <div class="card">
+        <h3>Total Revenue</h3>
+
+        <p id="total-revenue">--</p>
+      </div>
+      <div class="card">
+        <h3>Total Product Sales</h3>
+        <p id="total-product-sales">--</p>
+      </div>
+    </section>
+    <div class="flex-wrapper">
+      <div class="flex-item">
+        <canvas id="monthly_revenue" style="width:700px;"></canvas>
+      </div>
+      <div class="flex-item">
+        <canvas id="weekly_revenue" style="width:500px"></canvas>
+      </div>
+    </div>
+    <div class="flex-wrapper2">
+      <div class="flex-item2">
+        <canvas id="category_based" style="max-width:700px; height:500px"></canvas>
+      </div>
+      <div class="flex-item2">
+        <canvas id="topProductsQtyChart" style="width:300px; height:500px"></canvas>
+      </div>
+      <div class="flex-item2">
+        <canvas id="lowestProductsQtyChart" style="width:300px; height:500px"></canvas>
+      </div>
+
+    </div>
+    <section class="card of charts">
+      <div class="card-js">
+        <h2>Monthly Revenue</h2>
+        <canvas id="monthly_revenue" style="width:100%;max-width:600px"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Revenue by Day of Week</h2>
+        <canvas id="weekly_revenue" style="width:100%;max-width:600px"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Category Product Based on Qty Sold</h2>
+        <canvas id="category_based" style="width:100%;max-width:600px"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Top Products Sold by Qty</h2>
+        <canvas id="topProductsQtyChart"></canvas>
+      </div>
+
+      <div class="card-js">
+        <h2>Lowest Products Sold by Qty</h2>
+        <canvas id="lowestProductsQtyChart"></canvas>
+      </div>
+      <div id="loading"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2024 All Rights Reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="transaction.js" type="text/javascript"></script>
+  <script>
+
+    newArr = [];
+    monthlyArr = [];
+    // var mydata = JSON.parse(json);
+    // console.log(mydata)
+    arr = data['records']
+    sort = ["Lower Manhattan", "Astoria", "Hell's Kitchen"];
+    sortDate = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+    x = [];
+    y = [];
+    weeklyTotal = [];
+    const weeklyDay = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    categoryTotal = [];
+    categoryNames = [];
+    category = [];
+    topProductTotal = [];
+    topProductNames = [];
+    topProduct = [];
+    lowestProduct = []
+    lowestProductTotal = [];
+    lowestProductNames = [];
+    // arr = [
+    //   { "transaction_id": "4329", "transaction_date": "2023-01-08", "transaction_time": "17:48:46", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Dark Chocolate", "total_sales": 18 },
+    //   { "transaction_id": "8376", "transaction_date": "2023-01-15", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Dark Chocolate", "total_sales": 18 },
+    //   { "transaction_id": "11305", "transaction_date": "2023-01-20", "transaction_time": "15:01:52", "transaction_qty": "1", "store_id": "3", "store_location": "Hell's Kitchen", "product_id": "1", "unit_price": 18, "product_category": "Flavours", "product_type": "Organic Beans", "product_detail": "Peppermint", "total_sales": 18 },
+    //   { "transaction_id": "25862", "transaction_date": "2023-02-15", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Peppermint", "total_sales": 18 },
+    //   { "transaction_id": "26245", "transaction_date": "2023-02-16", "transaction_time": "09:15:11", "transaction_qty": "1", "store_id": "3", "store_location": "Hell's Kitchen", "product_id": "1", "unit_price": 18, "product_category": "Flavours", "product_type": "Organic Beans", "product_detail": "Peppermint", "total_sales": 1 },
+    //   { "transaction_id": "28300", "transaction_date": "2023-02-19", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Hell's Kitchen", "product_id": "1", "unit_price": 18, "product_category": "Flavours", "product_type": "Organic Beans", "product_detail": "Earl Gray", "total_sales": 18 },
+    //   { "transaction_id": "28561", "transaction_date": "2023-02-20", "transaction_time": "08:21:01", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "28951", "transaction_date": "2023-02-20", "transaction_time": "15:01:52", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Loose Tea", "product_type": "Organic Beans", "product_detail": "Earl Gray", "total_sales": 18 },
+    //   { "transaction_id": "39147", "transaction_date": "2023-03-09", "transaction_time": "07:45:34", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Branded", "product_type": "Organic Beans", "product_detail": "Earl Gray", "total_sales": 10 },
+    //   { "transaction_id": "40479", "transaction_date": "2023-03-10", "transaction_time": "17:24:17", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Branded", "product_type": "Organic Beans", "product_detail": "Earl Gray", "total_sales": 18 },
+    //   { "transaction_id": "40938", "transaction_date": "2023-03-11", "transaction_time": "10:54:15", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "OrganicBranded", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "43896", "transaction_date": "2023-03-15", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "44015", "transaction_date": "2023-03-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "44808", "transaction_date": "2023-03-16", "transaction_time": "19:59:51", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 12 },
+    //   { "transaction_id": "45238", "transaction_date": "2023-03-17", "transaction_time": "10:53:24", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "46803", "transaction_date": "2023-03-19", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Lower Manhattan", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "47051", "transaction_date": "2023-03-20", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "47065", "transaction_date": "2023-03-20", "transaction_time": "08:21:01", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Spicy Eye Opener Chai", "total_sales": 18 },
+    //   { "transaction_id": "47533", "transaction_date": "2023-03-20", "transaction_time": "15:01:52", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Spicy Eye Opener Chai", "total_sales": 18 },
+    //   { "transaction_id": "61637", "transaction_date": "2023-04-09", "transaction_time": "07:46:10", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Spicy Eye Opener Chai", "total_sales": 18 },
+    //   { "transaction_id": "67582", "transaction_date": "2023-04-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Askomeng", "total_sales": 18 },
+    //   { "transaction_id": "69114", "transaction_date": "2023-04-17", "transaction_time": "10:53:24", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "69951", "transaction_date": "2023-04-18", "transaction_time": "10:53:42", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "71065", "transaction_date": "2023-04-19", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "71194", "transaction_date": "2023-04-19", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "71343", "transaction_date": "2023-04-20", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "79758", "transaction_date": "2023-04-30", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "91055", "transaction_date": "2023-05-10", "transaction_time": "17:24:17", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "96567", "transaction_date": "2023-05-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 10 },
+    //   { "transaction_id": "96567", "transaction_date": "2023-05-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Loose Tea", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 100 },
+    //   { "transaction_id": "97348", "transaction_date": "2023-05-16", "transaction_time": "10:54:49", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 12 },
+    //   { "transaction_id": "97858", "transaction_date": "2023-05-16", "transaction_time": "19:59:51", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "99568", "transaction_date": "2023-05-18", "transaction_time": "10:53:42", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "100482", "transaction_date": "2023-05-19", "transaction_time": "08:52:22", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 1 },
+    //   { "transaction_id": "69951", "transaction_date": "2023-04-18", "transaction_time": "10:53:42", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "71065", "transaction_date": "2023-04-19", "transaction_time": "14:34:34", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "71194", "transaction_date": "2023-04-19", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "71343", "transaction_date": "2023-04-20", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "79758", "transaction_date": "2023-04-30", "transaction_time": "08:15:04", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "91055", "transaction_date": "2023-05-10", "transaction_time": "17:24:17", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "96567", "transaction_date": "2023-05-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 10 },
+    //   { "transaction_id": "96567", "transaction_date": "2023-05-15", "transaction_time": "18:22:40", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Loose Tea", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 100 },
+    //   { "transaction_id": "97348", "transaction_date": "2023-05-16", "transaction_time": "10:54:49", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 12 },
+    //   { "transaction_id": "97858", "transaction_date": "2023-05-16", "transaction_time": "19:59:51", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "99568", "transaction_date": "2023-05-18", "transaction_time": "10:53:42", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 18 },
+    //   { "transaction_id": "100482", "transaction_date": "2023-05-19", "transaction_time": "08:52:22", "transaction_qty": "1", "store_id": "3", "store_location": "Astoria", "product_id": "1", "unit_price": 18, "product_category": "Coffee beans", "product_type": "Organic Beans", "product_detail": "Brazilian - Organic", "total_sales": 1 }
+
+    // ];
+
+    function setVisible(selector, visible) {
+      document.querySelector(selector).style.display = visible ? 'block' : 'none';
+    }
+
+
+    proccessData(sortDate, sort);
+    monthlyRevenueChart = new Chart("monthly_revenue", {
+      type: "line",
+      data: {
+        labels: y,
+        datasets: [{
+          fill: false,
+          pointRadius: 2,
+          borderColor: "rgba(0,0,255,0.5)",
+          data: x
+        }]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Monthly Revenue",
+          fontSize: 16
+        }
+      }
+    });
+    weeklyRevenueChart = new Chart("weekly_revenue", {
+      type: "bar",
+      data: {
+        labels: weeklyDay,
+        datasets: [{
+          fill: false,
+          pointRadius: 2,
+          borderColor: "rgba(0,0,255,0.5)",
+          data: weeklyTotal,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(255, 99, 132, 0.2',
+            'rgba(255, 99, 132, 0.2'
+          ],
+          borderColor: [
+            'rgb(255, 99, 132)',
+            'rgb(255, 159, 64)',
+            'rgb(255, 205, 86)',
+            'rgb(75, 192, 192)',
+            'rgb(54, 162, 235)',
+            'rgb(153, 102, 255)',
+            'rgb(201, 203, 207)'
+          ],
+
+        }]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Revenue of day per week",
+          fontSize: 16
+        }
+      }
+    });
+    categoryBasedChart = new Chart("category_based", {
+      type: "horizontalBar",
+      data: {
+        labels: categoryNames,
+        datasets: [{
+          fill: false,
+          pointRadius: 2,
+          borderColor: "rgba(0,0,255,0.5)",
+          data: categoryTotal
+        }]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: "Category Product Based on Qty Sold",
+          fontSize: 16
+        }
+      }
+    });
+
+
+
+    // Top Products Sold by Qty Chart
+    topProductChart = new Chart("topProductsQtyChart", {
+      type: "horizontalBar",
+      data: {
+        labels: topProductNames, // To be filled dynamically
+        datasets: [{
+          label: 'Qty Sold',
+          data: topProductTotal, // To be filled dynamically
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
+        title: {
+          display: true,
+          text: 'Top Products Sold by Qty',
+          fontSize: 16
+        }
+      }
+    });
+    lowestProductChart = new Chart("lowestProductsQtyChart", {
+      type: "horizontalBar",
+      data: {
+        labels: lowestProductNames, // To be filled dynamically
+        datasets: [{
+          label: 'Qty Sold',
+          data: lowestProductTotal, // To be filled dynamically
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        },
+        title: {
+          display: true,
+          text: 'Lowest Products Sold by Qty',
+          fontSize: 16
+        }
+      }
+    });
+    function setVisible(selector, visible) {
+      document.querySelector(selector).style.display = visible ? 'block' : 'none';
+    }
+    function proccessData(selectMonth, selectStore) {
+
+
+      var options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+      console.log("start")
+      // console.log(selectStore)
+      newVal = [];
+      newVal = arr.filter((data) => { return selectStore.includes(data['store_location']) });
+      for (let i = 0; i < newVal.length; i++) {
+        newVal[i]['transaction_date'] = new Date(newVal[i]['transaction_date']).toLocaleDateString("en-US", options);
+      }
+      for (let j = 0; j < selectMonth.length; j++) {
+        temp = 0;
+        for (let i = 0; i < newVal.length; i++) {
+          if (newVal[i]['transaction_date'].includes(selectMonth[j])) {
+            newArr.push(newVal[i]);
+            temp = temp + newVal[i]['total_sales']
+          }
+        }
+        x.push(temp);
+      }
+      y = sortDate;
+
+      processWeekly(newArr);
+      processByCategory(newArr);
+      processByTopProduct(newArr)
+      processByLowestProduct(newArr)
+      console.log('end')
+      document.body.classList.remove('no-scroll')
+      setVisible('#loading', false);
+    }
+
+    function processWeekly(value) {
+      // console.log("TRY")
+      // console.log(value)
+      for (let j = 0; j < weeklyDay.length; j++) {
+        temp = 0;
+        for (let i = 0; i < value.length; i++) {
+          if (value[i]['transaction_date'].includes(weeklyDay[j])) {
+            temp = temp + newVal[i]['total_sales']
+          }
+        }
+        weeklyTotal.push(temp);
+      }
+    }
+    function processByCategory(value) {
+      // console.log('processing');
+      var obj = {};
+      for (let i = 0; i < value.length; i++) {
+        if (category.length == 0) {
+          obj["name"] = value[i]['product_category'];
+          obj["total"] = value[i]['total_sales'];
+          category.push(obj);
+        } else {
+          for (let j = 0; j < category.length; j++) {
+            if (category[j]['name'].includes(value[i]['product_category'])) {
+              category[j]['total'] = category[j]['total'] + value[i]['total_sales'];
+              break;
+            }
+            else {
+              if (category.length != j + 1) {
+                continue;
+              } else {
+                temp = {};
+                temp["name"] = value[i]['product_category'];
+                temp["total"] = value[i]['total_sales'];
+                category.push(temp);
+                break;
+              }
+            }
+          }
+
+        }
+        category.sort(function (a, b) {
+          return b['total'] - a['total'];
+        });
+
+      }
+      for (let i = 0; i < category.length; i++) {
+        categoryTotal.push(category[i]['total']);
+        categoryNames.push(category[i]['name']);
+      }
+    }
+    function processByTopProduct(value) {
+      var obj = {};
+      for (let i = 0; i < value.length; i++) {
+        if (topProduct.length == 0) {
+          obj["name"] = value[i]['product_detail'];
+          obj["total"] = value[i]['total_sales'];
+          topProduct.push(obj);
+        } else {
+          for (let j = 0; j < topProduct.length; j++) {
+            if (topProduct[j]['name'].includes(value[i]['product_detail'])) {
+              topProduct[j]['total'] = topProduct[j]['total'] + value[i]['total_sales'];
+              break;
+            }
+            else {
+              if (topProduct.length != j + 1) {
+                continue;
+              } else {
+                temp = {};
+                temp["name"] = value[i]['product_detail'];
+                temp["total"] = value[i]['total_sales'];
+                topProduct.push(temp);
+                break;
+              }
+            }
+          }
+
+        }
+        topProduct.sort(function (a, b) {
+          return b['total'] - a['total'];
+        });
+      }
+      console.log(topProduct.length)
+      for (let i = 0; i < topProduct.length; i++) {
+        if (topProductTotal.length < 5) {
+          topProductTotal.push(topProduct[i]['total']);
+          topProductNames.push(topProduct[i]['name']);
+        }
+        else {
+          break;
+        }
+      }
+    }
+
+    function processByLowestProduct(value) {
+      var obj = {};
+      for (let i = 0; i < value.length; i++) {
+        if (lowestProduct.length == 0) {
+          obj["name"] = value[i]['product_detail'];
+          obj["total"] = value[i]['total_sales'];
+          lowestProduct.push(obj);
+        } else {
+          for (let j = 0; j < lowestProduct.length; j++) {
+            if (lowestProduct[j]['name'].includes(value[i]['product_detail'])) {
+              lowestProduct[j]['total'] = lowestProduct[j]['total'] + value[i]['total_sales'];
+              break;
+            }
+            else {
+              if (lowestProduct.length != j + 1) {
+                continue;
+              } else {
+                temp = {};
+                temp["name"] = value[i]['product_detail'];
+                temp["total"] = value[i]['total_sales'];
+                lowestProduct.push(temp);
+                break;
+              }
+            }
+          }
+
+        }
+        lowestProduct.sort(function (a, b) {
+          return a['total'] - b['total'];
+        });
+      }
+      console.log("lengt")
+
+      for (let i = 0; i < lowestProduct.length; i++) {
+        console.log(i)
+        if (lowestProductTotal.length < 5) {
+          lowestProductTotal.push(lowestProduct[i]['total']);
+          lowestProductNames.push(lowestProduct[i]['name']);
+        }
+        else {
+          break;
+        }
+      }
+      console.log(lowestProductTotal)
+      console.log(lowestProductNames)
+    }
+    function updateData() {
+      monthlyArr = []; x = [];
+      y = [];
+      weeklyTotal = [];
+      categoryTotal = [];
+      categoryNames = [];
+      category = [];
+      newArr = [];
+      topProductTotal = [];
+      topProductNames = [];
+      topProduct = [];
+      lowestProduct = []
+      lowestProductTotal = [];
+      lowestProductNames = [];
+      proccessData(sortDate, sort);
+      // console.log(sortDate)
+      // console.log(x)
+      monthlyRevenueChart.data.datasets[0].data = x
+      monthlyRevenueChart.data.labels = sortDate
+      weeklyRevenueChart.data.datasets[0].data = weeklyTotal;
+      weeklyRevenueChart.data.labels = weeklyDay;
+      categoryBasedChart.data.datasets[0].data = categoryTotal;
+      categoryBasedChart.data.labels = categoryNames;
+
+      topProductChart.data.datasets[0].data = topProductTotal;
+      topProductChart.data.labels = topProductNames;
+      lowestProductChart.data.datasets[0].data = lowestProductTotal;
+      lowestProductChart.data.labels = lowestProductNames;
+
+      monthlyRevenueChart.update();
+      categoryBasedChart.update();
+      topProductChart.update();
+      categoryBasedChart.update();
+      lowestProductChart.update();
+    }
+
+    //CHECKBOX SCRIPT
+    var dropdownValue = "Nothing is selected";
+    var multiselect = document.getElementById("mySelectLabel");
+    var multiselectOption = multiselect.getElementsByTagName('option')[0];
+    var checkboxes = document.querySelectorAll('input[class="monthSelector');
+    var checkboxesStore = document.querySelectorAll('input[class="storeSelector');
+    var multiselectStore = document.getElementById("mySelectLabelStore");
+    var multiselectStoreOption = multiselectStore.getElementsByTagName('option')[0];
+    var dropdownValueStore = "Nothing is selected";
+    window.onload = (event) => {
+      if (sortDate.length > 0) {
+        checkboxes = document.querySelectorAll('input[class="monthSelector');
+        dropdownValue = sortDate.join(', ');
+      }
+      if (sort.length > 0) {
+        checkboxesStore = document.querySelectorAll('input[class="storeSelector');
+        dropdownValueStore = sort.join(', ');
+      }
+
+      multiselectOption.innerText = dropdownValue;
+      multiselectStoreOption.innerText = dropdownValueStore;
+    };
+
+    function initMultiselect() {
+      checkboxStatusChange();
+      document.addEventListener("click", function (evt) {
+        var flyoutElement = document.getElementById('myMultiselect'),
+          targetElement = evt.target; // clicked element
+
+        do {
+          if (targetElement == flyoutElement) {
+            // This is a click inside. Do nothing, just return.
+            // console.log('click inside');
+            return;
+          }
+
+          // Go up the DOM
+          targetElement = targetElement.parentNode;
+        } while (targetElement);
+
+        // This is a click outside.
+        toggleCheckboxArea(true);
+        // console.log('click outside');
+      });
+    }
+    function toggleAll(source) {
+
+      for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+          checkboxes[i].checked = source.checked;
+      }
+      initMultiselect()
+    }
+    function checkboxStatusChange() {
+      sortDate = []
+      var values = [];
+      var checkboxes = document.getElementById("selectMonth");
+      var checkedCheckboxes = checkboxes.querySelectorAll('input[type=checkbox]:checked');
+      for (const item of checkedCheckboxes) {
+
+        var checkboxValue = item.getAttribute('value');
+        if (checkboxValue != 'all') {
+          sortDate.push(checkboxValue);
+        }
+      }
+
+      // console.log(values)
+      dropdownValue = "Nothing is selected";
+      if (sortDate.length > 0) {
+        dropdownValue = sortDate.join(', ');
+      }
+
+      multiselectOption.innerText = dropdownValue;
+    }
+
+    function toggleCheckboxArea(onlyHide = false) {
+      var checkboxes = document.getElementById("selectMonth");
+      var displayValue = checkboxes.style.display;
+
+      if (displayValue != "block") {
+        if (onlyHide == false) {
+          checkboxes.style.display = "block";
+        }
+      } else {
+
+        var intervalId = setInterval(function () {
+          window.clearInterval(intervalId);
+          updateData(sortDate)
+        }, 200);
+        checkboxes.style.display = "none";
+      }
+    }
+
+
+    //STORE CHECKBOX
+
+    function initmultiselectStore() {
+      checkboxStatusChangeStore();
+      document.addEventListener("click", function (evt) {
+        var flyoutElement = document.getElementById('mymultiselectStore'),
+          targetElement = evt.target; // clicked element
+
+        do {
+          if (targetElement == flyoutElement) {
+            // This is a click inside. Do nothing, just return.
+            // console.log('click inside');
+            return;
+          }
+
+          // Go up the DOM
+          targetElement = targetElement.parentNode;
+        } while (targetElement);
+
+        // This is a click outside.
+        toggleCheckboxAreaStore(true);
+        // console.log('click outside');
+      });
+    }
+    function toggleAllStore(source) {
+
+      for (var i = 0; i < checkboxesStore.length; i++) {
+        if (checkboxesStore[i] != source)
+          checkboxesStore[i].checked = source.checked;
+      }
+      initmultiselectStore()
+    }
+    function checkboxStatusChangeStore() {
+
+
+      sort = [];
+      // console.log('enters here')
+      var checkboxes = document.getElementById("selectStore");
+      var checkedCheckboxes = checkboxes.querySelectorAll('input[type=checkbox]:checked');
+      for (const item of checkedCheckboxes) {
+        var checkboxValue = item.getAttribute('value');
+        if (checkboxValue != 'allStore') {
+          sort.push(checkboxValue);
+
+        }
+      }
+
+      // console.log(sort)
+      var dropdownValueStore = "Nothing is selected";
+      if (sort.length > 0) {
+        dropdownValueStore = sort.join(', ');
+      }
+
+      multiselectStoreOption.innerText = dropdownValueStore;
+    }
+
+    function toggleCheckboxAreaStore(onlyHide = false) {
+      var checkboxes = document.getElementById("selectStore");
+      var displayValue = checkboxes.style.display;
+
+      if (displayValue != "block") {
+        if (onlyHide == false) {
+          checkboxes.style.display = "block";
+        }
+      } else {
+        checkboxes.style.display = "none";
+        var intervalId = setInterval(function () {
+          window.clearInterval(intervalId);
+          updateData(sortDate, sort)
+        }, 200);
+
+      }
+    }
+  </script>
+</body>
+
+</html>
